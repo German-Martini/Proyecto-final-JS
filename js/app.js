@@ -15,22 +15,23 @@ let canchas_card = document.querySelector(`#canchas`)
 
 
 class Reserva {
-    constructor(fecha, horario, predio) {
+    constructor(fecha, horario, predio, cancha) {
         this.fecha = fecha;
         this.horario = horario;
         this.predio = predio;
+        this.cancha = cancha
     }
 }
 
 let misReservas = []
 
-
-
-
-
 let contenedorReservas = document.querySelector("#contenedorReservas");
 
+
 let imputBoton = document.querySelector("#boton");
+
+
+
 
 deportes.forEach ((deporte)=> {
 
@@ -46,32 +47,51 @@ deportes.forEach ((deporte)=> {
     let inputFecha = document.querySelector("#fecha").value;
     let inputHorario = document.querySelector("#horario").value;
     let inputPredio = document.querySelector("#predio").value;
-    
 
+    let comprobarReserva = misReservas.some(reserva => 
+        reserva.fecha === inputFecha && 
+        reserva.horario === inputHorario && 
+        reserva.predio === inputPredio && 
+        reserva.cancha === deporte.nombre
+    );
+
+    if (inputFecha == "") {
+        Swal.fire("No ingresaste una fecha");
+        return;
+    } else if (comprobarReserva) {
+        Swal.fire("Los datos ingresados son los mismos");
+        return;
+    }
 
     misReservas.push(new Reserva(
-        inputNombre,    
-        inputEmail,
         inputFecha,
         inputHorario,
         inputPredio,
-        inputDeporte
+        deporte.nombre
     ));
+
+    renderReservas();
+    
+});
+
+canchas_card.append(card)
+});
+
+
+function renderReservas() {
 
     contenedorReservas.innerHTML = "";
     
     
     
-    misReservas.forEach((reserva) => {
+    misReservas.forEach((reserva, borrar) => {
         
         let copia = document.querySelector("#reservaTemplate").content.cloneNode(true);
         
-        copia.querySelector(".reservaNombre").textContent += reserva.nombre
-        copia.querySelector(".reservaEmail").textContent += reserva.email
         copia.querySelector(".reservaFecha").textContent += reserva.fecha
         copia.querySelector(".reservaHorario").textContent += reserva.horario
         copia.querySelector(".reservaPredio").textContent += reserva.predio
-        copia.querySelector(".reservaDeporte").textContent += reserva.deporte
+        copia.querySelector(".reservaDeporte").textContent += reserva.cancha
         
         
         let btnEliminar = copia.querySelector(".eliminar");
@@ -81,82 +101,45 @@ deportes.forEach ((deporte)=> {
             contenedorReservas.append(copia);
 
             btnConfirmar.addEventListener(`click`, () => {
-                localStorage.setItem('reservas', JSON.stringify(misReservas));
-                seccion.classList.remove('plantilla');
-                seccion.innerHTML = '';
+                Swal.fire({
+                    title: "Querés confirmar la reservación?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Si, quiero confirmar!"
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      Swal.fire({
+                        title: "Listo, ya reservaste",
+                        text: "Te aparecera en `Mis reservaciones`",
+                        icon: "success"
+                      });
+                      localStorage.setItem('reservas', JSON.stringify(misReservas));
+                      eliminarReserva(borrar);  
+                    }
+                  });
             });
             
             
             btnEliminar.addEventListener('click', () => {
-                seccion.classList.remove('plantilla');
-                seccion.innerHTML = '';
-                localStorage.removeItem('reservas')  
+                eliminarReserva(borrar);
             });
             
             
         })
-    })
+    }
 
-    canchas_card.append(card)
-})
 
-// imputBoton.addEventListener('click', (evento) => {
-
-//     evento.preventDefault();
-
-//     let inputFecha = document.querySelector("#fecha").value;
-//     let inputHorario = document.querySelector("#horario").value;
-//     let inputPredio = document.querySelector("#predio").value;
+function eliminarReserva(borrar) {
+   
+    misReservas.splice(borrar, 1);
     
+    renderReservas();
+}
 
+let imputFecha = luxon.DateTime;
 
-//     misReservas.push(new Reserva(
-//         inputNombre,    
-//         inputEmail,
-//         inputFecha,
-//         inputHorario,
-//         inputPredio,
-//         inputDeporte
-//     ));
+let fechaActual =  imputFecha.now().toISODate();
 
-//     contenedorReservas.innerHTML = "";
-    
-    
-    
-//     misReservas.forEach((reserva) => {
-        
-//         let copia = document.querySelector("#reservaTemplate").content.cloneNode(true);
-        
-//         copia.querySelector(".reservaNombre").textContent += reserva.nombre
-//         copia.querySelector(".reservaEmail").textContent += reserva.email
-//         copia.querySelector(".reservaFecha").textContent += reserva.fecha
-//         copia.querySelector(".reservaHorario").textContent += reserva.horario
-//         copia.querySelector(".reservaPredio").textContent += reserva.predio
-//         copia.querySelector(".reservaDeporte").textContent += reserva.deporte
-        
-        
-//         let btnEliminar = copia.querySelector(".eliminar");
-//         let btnConfirmar = copia.querySelector(".confirmar");
-//         let seccion = copia.querySelector("#reserva");
-        
-//             contenedorReservas.append(copia);
-
-//             btnConfirmar.addEventListener(`click`, () => {
-//                 localStorage.setItem('reservas', JSON.stringify(misReservas));
-//                 seccion.classList.remove('plantilla');
-//                 seccion.innerHTML = '';
-//             });
-            
-            
-//             btnEliminar.addEventListener('click', () => {
-//                 seccion.classList.remove('plantilla');
-//                 seccion.innerHTML = '';
-//                 localStorage.removeItem('reservas')  
-//             });
-            
-            
-//         })
-        
-//     });
-
-
+document.querySelector(`#fecha`).setAttribute('min', fechaActual);

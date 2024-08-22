@@ -9,8 +9,11 @@ header {
     position: sticky;
     top: 0;
     border: 3px solid black;
-    /* height: 103px; */
-    /* z-index: 1030; */
+    z-index: 1030;
+}
+
+.body {
+    background-color: rgb(53, 53, 53);
 }
 
 figure img {
@@ -81,7 +84,7 @@ nav ul li a {
 
 .h2_cancha {
     text-align: center;
-    color: aliceblue;
+    color: rgb(255, 255, 255);
 }
 
 form {
@@ -125,13 +128,14 @@ label {
     text-align: center;
     margin: 30px;
     text-decoration: underline;
+    color: white;
 
 }
 
 .contenedorReservas {
     display: grid;
     grid-template-columns: repeat(auto-fit,
-            minmax(150PX,
+            minmax(300PX,
                 1fr));
     gap: 30px;
     overflow-x: hidden;
@@ -148,6 +152,7 @@ label {
     padding-left: 5px;
     padding-right: 5px;
     max-width: 300px;
+    background-color: rgb(255, 255, 255);
 }
 
 .reserva p {
