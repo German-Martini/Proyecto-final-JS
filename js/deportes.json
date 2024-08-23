@@ -1,0 +1,17 @@
+[
+    {
+        "nombre": "padel",
+        "precio": 15000,
+        "imagen": "./imagenes/padel.jpg"
+    },
+    {
+        "nombre": "futbol 5",
+        "precio": 20000,
+        "imagen": "./imagenes/futbol 5.jpg"
+    },
+    {
+        "nombre": "futbol 7",
+        "precio": 28000,
+        "imagen": "./imagenes/futbol 7.jpg"
+    }
+]

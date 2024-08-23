@@ -12,6 +12,7 @@ let deportes = [
     new deporte("futbol 7", 28000),
 ]
 
+
 let canchas_card = document.querySelector(`#canchas`)
 
 
@@ -32,55 +33,62 @@ let contenedorReservas = document.querySelector("#contenedorReservas");
 
 let imputBoton = document.querySelector("#boton");
 
+fetch(`./js/deportes.json`)
+.then((res) => res.json())
+.then((datos) => renderizarDeportes(datos))
+.catch((error) => console.log(error))
 
 
 
-deportes.forEach((deporte) => {
+function renderizarDeportes (deportes) {
+    deportes.forEach((deporte) => {
 
-    let card = document.querySelector(`#deportesTemplate`).content.cloneNode(true)
-
-    card.querySelector("img").src = deporte.imagen
-
-    card.querySelector("h5").textContent = deporte.nombre
-
-    card.querySelector("h6").textContent = `$${deporte.precio} x hora`
-
-    card.querySelector(`.btnReservar`).addEventListener(`click`, () => {
-
-
-        let inputFecha = document.querySelector("#fecha").value;
-        let inputHorario = document.querySelector("#horario").value;
-        let inputPredio = document.querySelector("#predio").value;
-
-        let comprobarReserva = misReservas.some(reserva =>
-            reserva.fecha === inputFecha &&
-            reserva.horario === inputHorario &&
-            reserva.predio === inputPredio &&
-            reserva.cancha === deporte.nombre
-        );
-
-        if (inputFecha == "") {
-            Swal.fire("No ingresaste una fecha");
-            return;
-        } else if (comprobarReserva) {
-            Swal.fire("Los datos ingresados son los mismos");
-            return;
-        }
-
-        misReservas.push(new Reserva(
-            inputFecha,
-            inputHorario,
-            inputPredio,
-            deporte.nombre,
-            deporte.precio
-        ));
-
-        renderReservas();
-
+        let card = document.querySelector(`#deportesTemplate`).content.cloneNode(true)
+    
+        card.querySelector("img").src = deporte.imagen
+    
+        card.querySelector("h5").textContent = deporte.nombre
+    
+        card.querySelector("h6").textContent = `$${deporte.precio} x hora`
+    
+        card.querySelector(`.btnReservar`).addEventListener(`click`, () => {
+    
+    
+            let inputFecha = document.querySelector("#fecha").value;
+            let inputHorario = document.querySelector("#horario").value;
+            let inputPredio = document.querySelector("#predio").value;
+    
+            let comprobarReserva = misReservas.some(reserva =>
+                reserva.fecha === inputFecha &&
+                reserva.horario === inputHorario &&
+                reserva.predio === inputPredio &&
+                reserva.cancha === deporte.nombre
+            );
+    
+            if (inputFecha == "") {
+                Swal.fire("No ingresaste una fecha");
+                return;
+            } else if (comprobarReserva) {
+                Swal.fire("Los datos ingresados son los mismos");
+                return;
+            }
+    
+            misReservas.push(new Reserva(
+                inputFecha,
+                inputHorario,
+                inputPredio,
+                deporte.nombre,
+                deporte.precio
+            ));
+    
+            renderReservas();
+    
+        });
+    
+        canchas_card.append(card)
     });
+}
 
-    canchas_card.append(card)
-});
 
 
 function renderReservas() {
@@ -159,3 +167,4 @@ let imputFecha = luxon.DateTime;
 let fechaActual = imputFecha.now().toISODate();
 
 document.querySelector(`#fecha`).setAttribute('min', fechaActual);
+
