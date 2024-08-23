@@ -154,6 +154,10 @@ label {
     max-width: 300px;
     background-color: rgb(255, 255, 255);
 }
+.plantilla div span {
+    font-weight: bold;
+    text-decoration: underline;
+  } 
 
 .reserva p {
     margin-bottom: 10px;
@@ -183,4 +187,20 @@ label {
 .card img {
     height: 200px;
     border: 2px solid rgb(0, 0, 0);
+}
+
+.reservas_h1 {
+    color: white;
+    text-align: center;
+}
+
+.misReservas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,
+            minmax(300PX,
+                1fr));
+    gap: 30px;
+    overflow-x: hidden;
+    padding-left: 100px;
+    padding-right: 100px;
 }
