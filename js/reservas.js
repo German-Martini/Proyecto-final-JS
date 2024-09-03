@@ -1,3 +1,5 @@
+//Mostrar las reservas guardadas en el local storage 
+
 let reservasHechas = JSON.parse(localStorage.getItem('reservasConfirmadas')) || []
 
 let reservasContainer = document.querySelector(".misReservas")
@@ -11,7 +13,7 @@ reservasHechas.forEach(reserva => {
     copia.querySelector(".reservaPredio").textContent += reserva.predio
     copia.querySelector(".reservaDeporte").textContent += reserva.cancha
     copia.querySelector(".reservaPrecio").textContent += reserva.precio
-   
+
 
 
     reservasContainer.append(copia);
